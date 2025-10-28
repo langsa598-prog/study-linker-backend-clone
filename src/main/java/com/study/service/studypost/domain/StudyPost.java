@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "study_posts")
+@Table(name = "Study_posts")
 @Getter
 @Setter
 public class StudyPost {

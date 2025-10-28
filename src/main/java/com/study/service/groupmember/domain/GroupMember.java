@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "group_members",
+@Table(name = "Group_members",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"group_id", "user_id"})})
 public class GroupMember {
 
