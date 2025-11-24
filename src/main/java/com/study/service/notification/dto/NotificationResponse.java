@@ -1,5 +1,7 @@
 package com.study.service.notification.dto;
 
+import com.study.service.notification.domain.Notification;
+
 import java.time.LocalDateTime;
 
 public class NotificationResponse {
@@ -19,6 +21,17 @@ public class NotificationResponse {
         this.type = type;
         this.isRead = isRead;
         this.createdAt = createdAt;
+    }
+
+    public static NotificationResponse fromEntity(Notification n) {
+        return new NotificationResponse(
+                n.getNotificationId(),
+                n.getUser().getUserId(),
+                n.getMessage(),
+                n.getType().name(),
+                n.getIsRead(),
+                n.getCreatedAt()
+        );
     }
 
     public Long getNotificationId() { return notificationId; }

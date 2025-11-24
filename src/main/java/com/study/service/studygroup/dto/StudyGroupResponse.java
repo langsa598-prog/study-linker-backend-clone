@@ -1,22 +1,26 @@
 package com.study.service.studygroup.dto;
 
+import com.study.service.studygroup.domain.StudyGroup;
+
 import java.time.LocalDateTime;
 
 public class StudyGroupResponse {
-    private Long id;
+
+    private Long groupId;   // ← 통일!
     private Long leaderId;
     private String title;
     private String description;
-    private int maxMembers;
+    private Integer maxMembers;
     private String category;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private LocalDateTime createdAt;
 
-    public StudyGroupResponse(Long id, Long leaderId, String title, String description,
-                              int maxMembers, String category, double latitude, double longitude,
+    public StudyGroupResponse(Long groupId, Long leaderId, String title, String description,
+                              Integer maxMembers, String category,
+                              Double latitude, Double longitude,
                               LocalDateTime createdAt) {
-        this.id = id;
+        this.groupId = groupId;
         this.leaderId = leaderId;
         this.title = title;
         this.description = description;
@@ -27,13 +31,29 @@ public class StudyGroupResponse {
         this.createdAt = createdAt;
     }
 
-    public Long getId() { return id; }
+    // ⭐ 엔티티 → DTO 변환용 정적 메서드
+    public static StudyGroupResponse fromEntity(StudyGroup group) {
+        return new StudyGroupResponse(
+                group.getGroupId(),
+                group.getLeader() != null ? group.getLeader().getUserId() : null,
+                group.getTitle(),
+                group.getDescription(),
+                group.getMaxMembers(),
+                group.getCategory(),
+                group.getLatitude() != null ? group.getLatitude().doubleValue() : null,
+                group.getLongitude() != null ? group.getLongitude().doubleValue() : null,
+                group.getCreatedAt()
+        );
+    }
+
+    // getters
+    public Long getGroupId() { return groupId; }
     public Long getLeaderId() { return leaderId; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
-    public int getMaxMembers() { return maxMembers; }
+    public Integer getMaxMembers() { return maxMembers; }
     public String getCategory() { return category; }
-    public double getLatitude() { return latitude; }
-    public double getLongitude() { return longitude; }
+    public Double getLatitude() { return latitude; }
+    public Double getLongitude() { return longitude; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

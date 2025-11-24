@@ -1,12 +1,8 @@
 package com.study.service.studypost.controller;
 
-import com.study.service.studypost.domain.StudyReview;
-import com.study.service.studypost.domain.BoardType;
-import com.study.service.studypost.domain.StudyPost;
-import com.study.service.user.domain.User;
-import com.study.service.studypost.repository.StudyPostRepository;
-import com.study.service.studypost.repository.StudyReviewRepository;
-import com.study.service.user.repository.UserRepository;
+import com.study.service.studypost.dto.*;
+import com.study.service.studypost.service.StudyPostService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,62 +11,78 @@ import java.util.List;
 @RequestMapping("/api/study-posts")
 public class StudyPostController {
 
-    private final StudyPostRepository postRepository;
-    private final StudyReviewRepository reviewRepository;
-    private final UserRepository userRepository;
+    private final StudyPostService studyPostService;
 
-    public StudyPostController(StudyPostRepository postRepository,
-                               StudyReviewRepository reviewRepository,
-                               UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.reviewRepository = reviewRepository;
-        this.userRepository = userRepository;
+    public StudyPostController(StudyPostService studyPostService) {
+        this.studyPostService = studyPostService;
     }
 
-    //  게시글 전체 목록
+    // GET /api/study-posts - 게시글 전체 목록 조회
     @GetMapping
-    public List<StudyPost> list() {
-        return postRepository.findAll();
+    public ResponseEntity<List<StudyPostResponse>> getAllPosts() {
+        return ResponseEntity.ok(studyPostService.getAllPosts());
     }
 
+    // GET /api/study-posts/{postId} - 게시글 상세 조회
+    @GetMapping("/{postId}")
+    public ResponseEntity<StudyPostResponse> getPost(@PathVariable Long postId) {
+        return ResponseEntity.ok(studyPostService.getPost(postId));
+    }
+
+    // POST /api/study-posts - 게시글 생성(leaderId 포함)
     @PostMapping
-    public StudyPost create(@RequestBody StudyPost post,
-                            @RequestParam Long leaderId) {
-        User leader = userRepository.findById(leaderId).orElseThrow();
-        post.setLeader(leader);
-
-        if (post.getType() == null) {
-            post.setType(BoardType.FREE);
-        }
-
-        return postRepository.save(post);
+    public ResponseEntity<StudyPostResponse> createPost(@RequestBody StudyPostCreateRequest request) {
+        return ResponseEntity.ok(studyPostService.createPost(request));
     }
 
-
-
-    //  게시글 상세
-    @GetMapping("/{id}")
-    public StudyPost detail(@PathVariable Long id) {
-        return postRepository.findById(id).orElseThrow();
+    // PATCH /api/study-posts/{postId} - 게시글 수정
+    @PatchMapping("/{postId}")
+    public ResponseEntity<StudyPostResponse> updatePost(
+            @PathVariable Long postId,
+            @RequestBody StudyPostUpdateRequest request
+    ) {
+        return ResponseEntity.ok(studyPostService.updatePost(postId, request));
     }
 
-    //  리뷰 작성
-    @PostMapping("/{id}/reviews")
-    public StudyReview addReview(@PathVariable Long id,
-                                 @RequestParam Long userId,
-                                 @RequestBody StudyReview review) {
-        StudyPost post = postRepository.findById(id).orElseThrow();
-        User user = userRepository.findById(userId).orElseThrow();
-        review.setPost(post);
-        review.setUser(user);
-        return reviewRepository.save(review);
+    // DELETE /api/study-posts/{postId} - 게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        studyPostService.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 
-    //  특정 게시글의 리뷰 목록
-    @GetMapping("/{id}/reviews")
-    public List<StudyReview> reviews(@PathVariable Long id) {
-        return reviewRepository.findByPost_PostId(id);
+    // GET /api/study-posts/{postId}/reviews - 특정 게시글의 리뷰 목록 조회
+    @GetMapping("/{postId}/reviews")
+    public ResponseEntity<List<StudyReviewResponse>> getReviews(@PathVariable Long postId) {
+        return ResponseEntity.ok(studyPostService.getReviewsByPost(postId));
+    }
+
+    // POST /api/study-posts/{postId}/reviews - 특정 게시글에 리뷰 생성
+    @PostMapping("/{postId}/reviews")
+    public ResponseEntity<StudyReviewResponse> createReview(
+            @PathVariable Long postId,
+            @RequestBody StudyReviewCreateRequest request
+    ) {
+        return ResponseEntity.ok(studyPostService.createReview(postId, request));
+    }
+
+    // PATCH /api/study-posts/{postId}/reviews/{reviewId} - 리뷰 내용 수정
+    @PatchMapping("/{postId}/reviews/{reviewId}")
+    public ResponseEntity<StudyReviewResponse> updateReview(
+            @PathVariable Long postId,
+            @PathVariable Long reviewId,
+            @RequestBody StudyReviewUpdateRequest request
+    ) {
+        return ResponseEntity.ok(studyPostService.updateReview(postId, reviewId, request));
+    }
+
+    // DELETE /api/study-posts/{postId}/reviews/{reviewId} - 리뷰 삭제
+    @DeleteMapping("/{postId}/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable Long postId,
+            @PathVariable Long reviewId
+    ) {
+        studyPostService.deleteReview(postId, reviewId);
+        return ResponseEntity.noContent().build();
     }
 }
-
-

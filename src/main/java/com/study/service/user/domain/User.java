@@ -1,11 +1,9 @@
 package com.study.service.user.domain;
 
-import com.study.service.user.domain.Role;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "Users")
@@ -28,21 +26,29 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(nullable = false)
+    private Role role = Role.USER; // 기본값 USER
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_interest_tags", joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "User_interest_tags", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "tag")
     private List<String> interestTags = new ArrayList<>();
 
     private Double latitude;
+
     private Double longitude;
 
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist
     public void prePersist() {
+        if (role == null) {
+            role = Role.USER;
+        }
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }

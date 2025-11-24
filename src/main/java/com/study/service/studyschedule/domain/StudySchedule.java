@@ -2,10 +2,11 @@ package com.study.service.studyschedule.domain;
 
 import com.study.service.studygroup.domain.StudyGroup;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Study_schedules")
+@Table(name = "Study_schedules") // 테이블명 소문자/스네이크케이스 추천
 public class StudySchedule {
 
     @Id
@@ -29,6 +30,10 @@ public class StudySchedule {
     private LocalDateTime endTime;
 
     private String location;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StudyScheduleStatus status = StudyScheduleStatus.SCHEDULED;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -88,6 +93,14 @@ public class StudySchedule {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public StudyScheduleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(StudyScheduleStatus status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

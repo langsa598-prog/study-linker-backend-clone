@@ -1,11 +1,16 @@
+// src/main/java/com/study/service/studyschedule/dto/StudyScheduleRequest.java
 package com.study.service.studyschedule.dto;
 
+import java.time.LocalDateTime;
+
 public class StudyScheduleRequest {
-    private Long groupId;
+
+    private Long groupId;        // 🔹 그룹 ID
+
     private String title;
     private String description;
-    private String startTime; // "yyyy-MM-dd HH:mm:ss" 형식
-    private String endTime;   // "yyyy-MM-dd HH:mm:ss" 형식
+    private LocalDateTime startTime;  // 🔹 LocalDateTime
+    private LocalDateTime endTime;    // 🔹 LocalDateTime
     private String location;
 
     public Long getGroupId() { return groupId; }
@@ -17,11 +22,11 @@ public class StudyScheduleRequest {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getStartTime() { return startTime; }
-    public void setStartTime(String startTime) { this.startTime = startTime; }
+    public LocalDateTime getStartTime() { return startTime; }
+    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
 
-    public String getEndTime() { return endTime; }
-    public void setEndTime(String endTime) { this.endTime = endTime; }
+    public LocalDateTime getEndTime() { return endTime; }
+    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }

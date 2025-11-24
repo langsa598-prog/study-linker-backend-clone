@@ -3,11 +3,12 @@ package com.study.service.attendance.service;
 import com.study.service.attendance.domain.Attendance;
 import com.study.service.attendance.dto.AttendanceRequest;
 import com.study.service.attendance.dto.AttendanceResponse;
+import com.study.service.attendance.dto.AttendanceStatusUpdateRequest;
+import com.study.service.attendance.repository.AttendanceRepository;
+import com.study.service.studyschedule.repository.StudyScheduleRepository;
 import com.study.service.studyschedule.domain.StudySchedule;
 import com.study.service.user.domain.User;
-import com.study.service.studyschedule.StudyScheduleRepository;
 import com.study.service.user.repository.UserRepository;
-import com.study.service.attendance.repository.AttendanceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AttendanceService {
+
     private final AttendanceRepository repository;
     private final StudyScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
@@ -39,12 +41,12 @@ public class AttendanceService {
     }
 
     // 단건 조회
-    public Optional<AttendanceResponse> findById(Long id) {
-        return repository.findById(id)
+    public Optional<AttendanceResponse> findById(Long attendanceId) {
+        return repository.findById(attendanceId)
                 .map(AttendanceResponse::fromEntity);
     }
 
-    // 출석 체크(기존 있으면 상태 변경 + 시간 갱신)
+    // 출석 체크(있으면 업데이트, 없으면 생성)
     @Transactional
     public AttendanceResponse checkIn(AttendanceRequest request) {
         StudySchedule schedule = scheduleRepository.findById(request.getScheduleId())
@@ -71,7 +73,7 @@ public class AttendanceService {
         return AttendanceResponse.fromEntity(saved);
     }
 
-    // 스케줄별 조회
+    // 스케줄별 조회 (이건 계속 쓰고 싶으면 유지)
     public List<AttendanceResponse> findBySchedule(Long scheduleId) {
         return repository.findBySchedule_ScheduleId(scheduleId)
                 .stream()
@@ -79,17 +81,27 @@ public class AttendanceService {
                 .collect(Collectors.toList());
     }
 
-    // 출석 상태 변경
+    // 사용자별 조회: GET /api/attendance/user/{userId}
+    public List<AttendanceResponse> findByUser(Long userId) {
+        return repository.findByUser_UserId(userId)
+                .stream()
+                .map(AttendanceResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    // 출석 상태 변경 (PATCH)
     @Transactional
-    public AttendanceResponse updateStatus(Long id, String status) {
-        Attendance attendance = repository.findById(id)
+    public AttendanceResponse updateStatus(Long attendanceId, AttendanceStatusUpdateRequest request) {
+        Attendance attendance = repository.findById(attendanceId)
                 .orElseThrow(() -> new IllegalArgumentException("출석 기록을 찾을 수 없습니다."));
-        attendance.setStatus(Attendance.Status.valueOf(status));
+
+        attendance.setStatus(Attendance.Status.valueOf(request.getStatus()));
         attendance.setCheckedAt(LocalDateTime.now());
+
         return AttendanceResponse.fromEntity(repository.save(attendance));
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Long attendanceId) {
+        repository.deleteById(attendanceId);
     }
 }

@@ -8,7 +8,7 @@ public class RecommendedGroupDto {
     private String category;
     private Double latitude;
     private Double longitude;
-    private Double distance; // km 단위
+    private Double distance;
 
     public RecommendedGroupDto(Long groupId, String title, String category,
                                Double latitude, Double longitude, Double distance) {

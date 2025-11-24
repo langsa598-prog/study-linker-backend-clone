@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://studydb.cvs84gkomcwe.ap-northeast-2.rds.amazonaws.com:3306/studydb
+    url: jdbc:mariadb://studydb.choiiq8m684g.ap-northeast-2.rds.amazonaws.com:3306/studydb
     username: studyuser
     password: 12200000
   jpa:
@@ -16,5 +16,3 @@ spring:
 jwt:
   secret: "MySuperSecureSecretKey_ForStudyLinker_App_2025_AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJ"
   expiration: 3600000
-
-

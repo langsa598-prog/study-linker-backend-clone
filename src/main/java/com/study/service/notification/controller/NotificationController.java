@@ -17,20 +17,39 @@ public class NotificationController {
         this.service = service;
     }
 
-    // GET 요청: NotificationResponse DTO 반환
+    // GET /api/notifications - 알림 목록 조회
     @GetMapping
     public List<NotificationResponse> getAll() {
-        return service.findAllResponses();  // DTO로 변환 후 반환
+        return service.findAllResponses();
     }
 
-    // POST 요청: NotificationRequest DTO 사용
+    // GET /api/notifications/unread - 읽지 않은 알림 조회
+    @GetMapping("/unread")
+    public List<NotificationResponse> getUnread() {
+        return service.findUnreadResponses();
+    }
+
+    // POST /api/notifications - 알림 생성
     @PostMapping
     public NotificationResponse create(@RequestBody NotificationRequest request) {
-        return service.save(request);  // save 메서드에서 NotificationResponse 반환하도록 수정 필요
+        return service.save(request);
     }
 
+    // PATCH /api/notifications/{id}/read - 알림 읽음 처리
+    @PatchMapping("/{id}/read")
+    public NotificationResponse markAsRead(@PathVariable Long id) {
+        return service.markAsRead(id);
+    }
+
+    // DELETE /api/notifications/{id} - 알림 단건 삭제
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
+    }
+
+    // DELETE /api/notifications/all - 알림 전체 삭제
+    @DeleteMapping("/all")
+    public void deleteAll() {
+        service.deleteAll();
     }
 }

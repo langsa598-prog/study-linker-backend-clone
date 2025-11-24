@@ -3,11 +3,14 @@ package com.study.service.attendance.domain;
 import com.study.service.studyschedule.domain.StudySchedule;
 import com.study.service.user.domain.User;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Attendance",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"schedule_id", "user_id"})})
+@Table(
+        name = "Attendance",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"schedule_id", "user_id"})}
+)
 public class Attendance {
 
     @Id
@@ -25,13 +28,16 @@ public class Attendance {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ABSENT;
 
-    @Column(name = "checked_at", updatable = false)
+    @Column(name = "checked_at")
     private LocalDateTime checkedAt = LocalDateTime.now();
 
     public enum Status {
-        PRESENT, ABSENT, LATE
+        PRESENT,   // 출석
+        ABSENT,    // 결석
+        LATE       // 지각
     }
 
+    // Getter/Setter
     public Long getAttendanceId() {
         return attendanceId;
     }

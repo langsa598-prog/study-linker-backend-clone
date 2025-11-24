@@ -1,16 +1,13 @@
 package com.study.service.studygroup.dto;
 
 public class StudyGroupRequest {
-    private Long leaderId;
+
     private String title;
     private String description;
-    private int maxMembers;
+    private Integer maxMembers;
     private String category;
-    private double latitude;
-    private double longitude;
-
-    public Long getLeaderId() { return leaderId; }
-    public void setLeaderId(Long leaderId) { this.leaderId = leaderId; }
+    private Double latitude;
+    private Double longitude;
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -18,15 +15,15 @@ public class StudyGroupRequest {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public int getMaxMembers() { return maxMembers; }
-    public void setMaxMembers(int maxMembers) { this.maxMembers = maxMembers; }
+    public Integer getMaxMembers() { return maxMembers; }
+    public void setMaxMembers(Integer maxMembers) { this.maxMembers = maxMembers; }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public double getLatitude() { return latitude; }
-    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
 
-    public double getLongitude() { return longitude; }
-    public void setLongitude(double longitude) { this.longitude = longitude; }
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 }
