@@ -1,6 +1,7 @@
 package com.study.service.stats.controller;
 
 import com.study.service.stats.dto.ChartResponse;
+import com.study.service.stats.dto.StatsSummaryResponse;
 import com.study.service.stats.service.StatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,12 @@ public class StatsController {
     @GetMapping("/attendance")
     public ChartResponse getAttendanceStats() {
         return statsService.getAttendanceStats();
+    }
+
+    // 4) 운영 대시보드 요약 정보
+    @GetMapping("/summary")
+    public StatsSummaryResponse getSummary() {
+        return statsService.getSummary();
     }
 
 }

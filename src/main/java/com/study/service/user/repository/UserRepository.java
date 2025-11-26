@@ -2,6 +2,7 @@ package com.study.service.user.repository;
 
 import com.study.service.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -12,4 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
+    @Query(
+            value = "SELECT COUNT(*) FROM Users WHERE DATE(created_at) = CURDATE()",
+            nativeQuery = true
+    )
+    long countNewUsersToday();
 }

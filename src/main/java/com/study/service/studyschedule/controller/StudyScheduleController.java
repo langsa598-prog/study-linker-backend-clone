@@ -1,9 +1,14 @@
-package com.study.service.studyschedule;
+package com.study.service.studyschedule.controller;
 
+import com.study.service.security.CustomUserDetails;
+import com.study.service.studyschedule.StudyScheduleService;
 import com.study.service.studyschedule.domain.StudySchedule;
+import com.study.service.studyschedule.dto.MyScheduleResponse;
 import com.study.service.studyschedule.dto.StudyScheduleRequest;
 import com.study.service.studyschedule.dto.StudyScheduleResponse;
 import com.study.service.studyschedule.dto.StudyScheduleStatusUpdateRequest;
+import com.study.service.studyschedule.repository.StudyScheduleRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +19,11 @@ import java.util.stream.Collectors;
 public class StudyScheduleController {
 
     private final StudyScheduleService service;
+    private final StudyScheduleRepository studyScheduleRepository;
 
-    public StudyScheduleController(StudyScheduleService service) {
+    public StudyScheduleController(StudyScheduleService service, StudyScheduleRepository studyScheduleRepository) {
         this.service = service;
+        this.studyScheduleRepository = studyScheduleRepository;
     }
 
     // 일정 전체 조회: GET /api/study-schedules
@@ -77,5 +84,13 @@ public class StudyScheduleController {
     @DeleteMapping("/{scheduleId}")
     public void delete(@PathVariable Long scheduleId) {
         service.deleteById(scheduleId);
+    }
+
+    // 📌 내 전체 일정 조회
+    @GetMapping("/me")
+    public List<MyScheduleResponse> getMySchedules(
+            @AuthenticationPrincipal CustomUserDetails user) {
+
+        return studyScheduleRepository.getMySchedules(user.getUserId());
     }
 }

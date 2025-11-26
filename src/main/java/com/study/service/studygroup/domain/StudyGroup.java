@@ -42,6 +42,9 @@ public class StudyGroup {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(length = 100)
+    private String status;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -123,4 +126,7 @@ public class StudyGroup {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt; // 필요 없으면 setter 제거해도 됨
     }
+
+    public String getStatus() { return status;}
+    public void setStatus(String status) { this.status = status;}
 }

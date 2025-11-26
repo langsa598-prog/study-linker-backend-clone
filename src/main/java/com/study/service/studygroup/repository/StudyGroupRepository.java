@@ -4,9 +4,11 @@ import com.study.service.studygroup.domain.StudyGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
 
     @Query(value = """
@@ -34,4 +36,8 @@ public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {
             @Param("interestTags") String interestTags,
             @Param("distanceKm") Double distanceKm
     );
+
+
+        long countByStatus(String status);  // ACTIVE 그룹 수
+
 }

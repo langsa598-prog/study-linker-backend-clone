@@ -2,6 +2,7 @@ package com.study.service.studyschedule;
 
 import com.study.service.studyschedule.domain.StudySchedule;
 import com.study.service.studyschedule.domain.StudyScheduleStatus; // ★ 추가
+import com.study.service.studyschedule.dto.MyScheduleResponse;
 import com.study.service.studyschedule.dto.StudyScheduleRequest;
 import com.study.service.studyschedule.dto.StudyScheduleStatusUpdateRequest;
 import com.study.service.studygroup.domain.StudyGroup;
@@ -118,5 +119,10 @@ public class StudyScheduleService {
         }
 
         return scheduleRepository.save(schedule);
+    }
+
+
+    public List<MyScheduleResponse> getMySchedules(Long userId) {
+        return scheduleRepository.findMySchedules(userId);
     }
 }

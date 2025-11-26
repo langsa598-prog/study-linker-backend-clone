@@ -1,6 +1,7 @@
 package com.study.service.studyschedule.domain;
 
 import com.study.service.studygroup.domain.StudyGroup;
+import com.study.service.studyschedule.dto.MyScheduleResponse;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class StudySchedule {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
 
     // Getter, Setter
     public Long getScheduleId() {
@@ -106,4 +108,6 @@ public class StudySchedule {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+
 }
