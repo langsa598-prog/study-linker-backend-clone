@@ -29,8 +29,6 @@ public interface StudyScheduleRepository extends JpaRepository<StudySchedule, Lo
                 s.start_time,
                 s.end_time,
                 s.location,
-                s.latitude,
-                s.longitude,
                 s.group_id
             FROM Study_schedules s
             JOIN Group_members gm
