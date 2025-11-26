@@ -1,4 +1,4 @@
-package com.study.service.studyschedule;
+package com.study.service.studyschedule.service;
 
 import com.study.service.studyschedule.domain.StudySchedule;
 import com.study.service.studyschedule.domain.StudyScheduleStatus; // ★ 추가
@@ -8,6 +8,7 @@ import com.study.service.studyschedule.dto.StudyScheduleStatusUpdateRequest;
 import com.study.service.studygroup.domain.StudyGroup;
 import com.study.service.studygroup.repository.StudyGroupRepository;
 import com.study.service.studyschedule.repository.StudyScheduleRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,7 +123,7 @@ public class StudyScheduleService {
     }
 
 
-    public List<MyScheduleResponse> getMySchedules(Long userId) {
-        return scheduleRepository.findMySchedules(userId);
+    public List<MyScheduleResponse> getMyScheduleResponses(@AuthenticationPrincipal Long userId) {
+        return scheduleRepository.getMySchedules(userId);
     }
 }

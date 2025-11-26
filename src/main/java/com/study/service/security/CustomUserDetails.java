@@ -2,6 +2,7 @@ package com.study.service.security;
 
 import com.study.service.user.domain.Role;
 import com.study.service.user.domain.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,12 +12,21 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
+    @Getter
     private final Long userId;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(Long userId, String username, String password, Role role) {
+    // 기본 생성자 추가 (필드는 null로 초기화)
+    public CustomUserDetails() {
+        this.userId = null;
+        this.username = null;
+        this.password = null;
+        this.authorities = null;
+    }
+
+    public CustomUserDetails(User user,Long userId, String username, String password, Role role) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -25,15 +35,12 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails from(User user) {
         return new CustomUserDetails(
+                user,
                 user.getUserId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getRole()
         );
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     @Override

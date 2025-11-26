@@ -43,7 +43,7 @@ public interface StudyScheduleRepository extends JpaRepository<StudySchedule, Lo
     )
     List<Object[]> findRawMySchedules(Long userId);
 
-    default List<MyScheduleResponse> findMySchedules(Long userId) {
+    default List<MyScheduleResponse> getMySchedules(Long userId) {
         List<Object[]> rows = findRawMySchedules(userId);
 
         return rows.stream()
@@ -59,4 +59,6 @@ public interface StudyScheduleRepository extends JpaRepository<StudySchedule, Lo
                 ))
                 .toList();
     }
+
+   // List<MyScheduleResponse> getMySchedules(Long userId);
 }

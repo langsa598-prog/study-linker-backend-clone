@@ -1,7 +1,7 @@
 package com.study.service.studyschedule.controller;
 
 import com.study.service.security.CustomUserDetails;
-import com.study.service.studyschedule.StudyScheduleService;
+import com.study.service.studyschedule.service.StudyScheduleService;
 import com.study.service.studyschedule.domain.StudySchedule;
 import com.study.service.studyschedule.dto.MyScheduleResponse;
 import com.study.service.studyschedule.dto.StudyScheduleRequest;
@@ -88,8 +88,7 @@ public class StudyScheduleController {
 
     // 📌 내 전체 일정 조회
     @GetMapping("/me")
-    public List<MyScheduleResponse> getMySchedules(
-            @AuthenticationPrincipal CustomUserDetails user) {
+    public List<MyScheduleResponse> getMySchedules(CustomUserDetails user) {
 
         return studyScheduleRepository.getMySchedules(user.getUserId());
     }
