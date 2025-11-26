@@ -2,6 +2,7 @@ package com.study.service.stats.service;
 
 import com.study.service.stats.dto.ChartResponse;
 import com.study.service.stats.repository.AttendanceStatsRepository;
+import com.study.service.stats.repository.MemberRatioRepository;
 import com.study.service.stats.repository.StudyStatsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

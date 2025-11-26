@@ -31,6 +31,7 @@ public class StatsController {
     public ChartResponse getAttendanceStats() {
         return statsService.getAttendanceStats();
     }
+
 }
 
 
